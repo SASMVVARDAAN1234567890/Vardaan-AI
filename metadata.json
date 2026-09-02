@@ -1,0 +1,10 @@
+{
+  "name": "Vardaan AI",
+  "description": "Your smart AI assistant powered by Gemini for reasoning, coding, science, education, Hindi/Hinglish multilingual chat, multimodal file & image analysis, and image generation.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
