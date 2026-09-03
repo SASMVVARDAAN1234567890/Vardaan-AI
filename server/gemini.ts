@@ -100,14 +100,27 @@ export async function generateChatResponseStream(
     tools.push({ googleSearch: {} });
   }
 
-  const streamResponse = await ai.models.generateContentStream({
-    model: 'gemini-3.7-flash',
-    contents,
-    config: {
-      systemInstruction,
-      tools: tools.length > 0 ? tools : undefined,
-    },
-  });
+  let streamResponse;
+  try {
+    streamResponse = await ai.models.generateContentStream({
+      model: 'gemini-3.7-flash',
+      contents,
+      config: {
+        systemInstruction,
+        tools: tools.length > 0 ? tools : undefined,
+      },
+    });
+  } catch (err: any) {
+    // If search tool fails or specific model issue, retry with standard prompt without search tools
+    console.warn('Primary stream call failed, retrying without optional tools:', err?.message);
+    streamResponse = await ai.models.generateContentStream({
+      model: 'gemini-3.7-flash',
+      contents,
+      config: {
+        systemInstruction,
+      },
+    });
+  }
 
   let fullText = '';
   const sources: Array<{ title: string; uri: string }> = [];
